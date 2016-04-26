@@ -1,0 +1,58 @@
+<?php
+
+function user_greetings_menu() {
+  $items = array();
+
+  $items['greeting'] = array(
+    'title' => 'Welcome',
+    'page callback' => 'user_greeting',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin_logout'] = array(
+    'title' => 'Bye, Admin!',
+    'page callback' => 'admin_goodbye',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['user_logout'] = array(
+    'title' => 'Bye, User!',
+    'page callback' => 'user_goodbye',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function user_greeting() {
+  global $user;
+  if (in_array('administrator', array_values($user->roles))) {
+    return '<p>Good to see you again, Admin!</p>';
+  } else {
+    return '<p>Good to see you again, User!</p>';
+  }
+}
+
+function user_greetings_user_login() {
+  $_GET['destination'] = 'greeting';
+}
+
+function user_goodbye() {
+  return "<p>Y'all come back now ya hear</p>";
+}
+function user_greetings_user_logout() {
+  global $user;
+  if (in_array('administrator', array_values($user->roles))) {
+    $_GET['destination'] = 'admin_logout';
+  } elseif (in_array('authenticated user', array_values($user->roles))) {
+    $_GET['destination'] = 'user_logout';
+  } else {
+    $_GET['destination'] = 'user_logout';
+  }
+}
+
+function admin_goodbye() {
+  return "<p>See you later!</p>";
+}
