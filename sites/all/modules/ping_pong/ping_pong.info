@@ -1,0 +1,5 @@
+name = Ping Pong
+description = Displays output of the Ping Pong Problem using a form to take input
+package = Epicodus Examples
+core = 7.x
+files[] = ping-pong.module

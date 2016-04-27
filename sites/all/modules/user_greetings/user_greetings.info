@@ -1,5 +1,5 @@
 name = User Greetings
-description = user greetings
-package = User Greetings
+description = Greets the user upon login and logout
+package = Epicodus Examples
 core = 7.x
-files = user_greetings.module
+files[] = user_greetings.module
