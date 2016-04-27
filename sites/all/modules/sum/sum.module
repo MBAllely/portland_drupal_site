@@ -22,11 +22,15 @@ function sum_form() {
     '#title' => 'Left number',
     '#type' => 'textfield',
     '#description' => t('Please enter your starting number.'),
+    '#element_validate' => array('element_validate_number'),
+    '#required' => TRUE,
   );
    $form['right_number'] = array(
-     '#title' => 'Right number',
-     '#type' => 'textfield',
-     '#description' => t('Please enter a number a number to add to the first number'),
+    '#title' => 'Right number',
+    '#type' => 'textfield',
+    '#description' => t('Please enter a number a number to add to the first number'),
+    '#element_validate' => array('element_validate_number'),
+    '#required' => TRUE,
    );
 
    $form['submit'] = array(
