@@ -1,0 +1,5 @@
+name = Clock Angle
+description = Calculate the degree between hands on a clock at any time of day.
+package = Epicodus Examples
+core = 7.x
+files[] = clock_angle.module

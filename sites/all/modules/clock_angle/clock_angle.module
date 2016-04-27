@@ -1,0 +1,70 @@
+<?php
+
+function clock_angle_menu() {
+    $items['clock_angle'] = array(
+        'title' => 'Clock Angle',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('clock_angle_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    $items['clock_angle_success_page'] = array(
+        'title' => 'Success!',
+        'page callback' => 'clock_angle_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function clock_angle_form() {
+    $form['hour_input'] = array(
+        '#title' => 'Hour Input',
+        '#type' => 'textfield',
+        '#description' => t('Input an hour (1-12)'),
+    );
+    $form['minute_input'] = array(
+        '#title' => 'Minute Input',
+        '#type' => 'textfield',
+        '#description' => t('Input a minute (1-59)'),
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Go!',
+    );
+
+    return $form;
+}
+
+function clock_angle_form_submit($form, &$form_state) {
+    $hour = ($form_state['values']['hour_input']);
+    $minute = ($form_state['values']['minute_input']);
+    $hour_angle = (30 * $hour) + ($minute / 2);
+    $_SESSION['mydebug'] = $hour_angle;
+    $minute_angle = ($minute * 6);
+    $angle_diff = ($hour_angle - $minute_angle);
+    // var_dump($angle_diff);
+
+    if ($angle_diff > 180) {
+        $angle_diff = (360 - $angle_diff);
+    } elseif (($angle_diff < 0) && ($angle_diff > -180)) {
+        $angle_diff = abs($angle_diff);
+    } elseif ($angle_diff < -180) {
+        $angle_diff = ($angle_diff + 360);
+    }
+
+    $_SESSION['clock_angle_output'] = $angle_diff;
+    $form_state['redirect'] = 'clock_angle_success_page';
+}
+
+function clock_angle_success() {
+    // print_r('<pre>');
+    // var_dump($_SESSION);
+    // print_r('</pre>');
+    $output = '<h1>' . $_SESSION['clock_angle_output'] . '</h1>';
+    var_dump($_SESSION['clock_angle_output']);
+    return $output;
+}
