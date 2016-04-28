@@ -1,0 +1,6 @@
+1. Form takes three inputs from the form
+2. Validates input as positive integers
+
+2. Checks to see if it is a triangle
+3. Redirects to a success page
+4. Lets the user know what type of triangle their input created

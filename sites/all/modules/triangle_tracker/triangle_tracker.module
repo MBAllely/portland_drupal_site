@@ -1,0 +1,79 @@
+<?php
+
+function triangle_tracker_menu() {
+    $items['triangle_tracker'] = array(
+        'title' => 'Triangle Tracker',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('triangle_tracker_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    $items['triangle_tracker_success_page'] = array(
+        'title' => 'Triangle?',
+        'page callback' => 'triangle_tracker_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function triangle_tracker_form() {
+    $form['side_1'] = array(
+        '#title' => 'Side 1 length',
+        '#type' => 'textfield',
+        '#element_validate' => array('element_validate_number', 'element_validate_integer_positive'),
+        '#required' => TRUE,
+    );
+
+    $form['side_2'] = array(
+        '#title' => 'Side 2 length',
+        '#type' => 'textfield',
+        '#element_validate' => array('element_validate_number', 'element_validate_integer_positive'),
+        '#required' => TRUE,
+    );
+
+    $form['side_3'] = array(
+        '#title' => 'Side 3 length',
+        '#type' => 'textfield',
+        '#element_validate' => array('element_validate_number', 'element_validate_integer_positive'),
+        '#required' => TRUE,
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Triangulate!',
+    );
+
+    return $form;
+}
+
+function triangle_tracker_form_submit($form, &$form_state) {
+    $result = "";
+    $side_1 = $form_state['values']['side_1'];
+    $side_2 = $form_state['values']['side_2'];
+    $side_3 = $form_state['values']['side_3'];
+
+    if (($side_1 + $side_2 <= $side_3) || ($side_1 + $side_3 <= $side_2) || ($side_2 + $side_3 <= $side_1)) {
+        //Not a triangle
+        $result = "http://winnipeg.ca/waterandwaste/images/garbage/NoExtraGarb_cc.jpg";
+    } elseif (($side_1 == $side_2) && ($side_1 == $side_3)) {
+        //Equilateral
+        $result = "http://etc.usf.edu/clipart/38500/38598/triwent5_38598_lg.gif";
+    } elseif (($side_1 == $side_2) || ($side_1 == $side_3) ||($side_2 == $side_3)) {
+        //Isosceles
+        $result = "http://etc.usf.edu/clipart/38500/38597/triwent4_38597_lg.gif";
+    } else {
+        //Scalene
+        $result = "https://i.ytimg.com/vi/Pv854t5QUVs/maxresdefault.jpg";
+    }
+
+    $_SESSION['triangle_result'] = $result;
+
+    $form_state['redirect'] = 'triangle_tracker_success_page';
+}
+
+function triangle_tracker_success() {
+    return '<img src="' . $_SESSION['triangle_result'] . '" alt="triangle result">';
+}

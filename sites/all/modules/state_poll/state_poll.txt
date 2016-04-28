@@ -1,0 +1,4 @@
+1. Form will take a user's input for their favorite ice cream and state of residence
+2. Validator will verify that the state input matches the following formats: Oregon, OR, or, oregon
+3. Redirects to success page
+4. Displays a string containing a user's input
