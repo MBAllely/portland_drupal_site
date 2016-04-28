@@ -1,0 +1,8 @@
+0. User inputs coordinates of a king and queen on a chessboard to determine if the king is in check
+1. Form takes user input
+2. Validate that input is positive integers
+3. Check if king's x or y coordinate is the same as the queen's x or y coordinate
+4. Check if the slope of the line between the king and the queen's respective positions is 1 or -1
+5. Return true if conditions 3 or 4 are met
+6. Redirects to a success page
+7. Lets the user know if the king is in check
