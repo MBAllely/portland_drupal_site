@@ -1,0 +1,6 @@
+1. Has a menu link in the navigation menu to the game
+2. Player 1 (user) enters a word for their choice into a form and presses 'submit'
+3. Form is validated to ensure that the user has entered 'rock', 'paper', or 'scissors'
+4. Once the form is validated, page redirects to a form for player 2 with the same behavior as the form for player 1.
+5. Player 2's form is validated
+6. Page redirects to the 'game_over' page.  'game_over' page will state the winner, or if the game was a tie

@@ -1,0 +1,94 @@
+<?php
+
+function rock_paper_scissors_menu() {
+    $items['rock_paper_scissors'] = array(
+        'title' => 'Rock Paper Scissors',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('rock_paper_scissors_player_1_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['rock_paper_scissors_game_over'] = array(
+        'title' => 'GAME OVER',
+        'page callback' => 'rock_paper_scissors_game_over',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function rock_paper_scissors_player_1_form() {
+    $form['player_1_choice'] = array(
+        '#title' => 'Rock, paper, scissors!',
+        '#type' => 'textfield',
+        '#required' => TRUE,
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Go!'
+    );
+
+    return $form;
+}
+
+function rock_paper_scissors_player_2_form() {
+    $form['player_2_choice'] = array(
+        '#title' => 'Rock, paper, scissors!',
+        '#type' => 'textfield',
+        '#required' => TRUE,
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Go!'
+    );
+
+    return $form;
+}
+
+function rock_paper_scissors_form_validate($form, &$form_state) {
+    $player_1_choice = strtolower($form_state['values']['player_1_choice']);
+    $player_2_choice = strtolower($form_state['values']['player_2_choice']);
+
+    $allowed = array('rock', 'paper', 'scissors');
+    if (!in_array($player_1_choice, $allowed)) {
+        form_set_error('player_1_choice', t('You must enter a valid selection.'));
+    } elseif (!in_array($player_2_choice, $allowed)) {
+        form_set_error('player_2_choice', t('You must enter a valid selection'));
+    }
+}
+
+function rock_paper_scissors_form_submit($form, &$form_state) {
+    $result = "";
+    $player_1_choice = strtolower($form_state['values']['player_1_choice']);
+    $player_2_choice = strtolower($form_state['values']['player_2_choice']);
+
+    if ($player_1_choice == 'rock') {
+        if ($player_2_choice == 'rock') {
+            $result = "It's a tie!";
+        } elseif ($player_2_choice == 'paper') {
+            $result = 'Player 2 wins!';
+        } elseif ($player_2_choice == 'scissors') {
+            $result = 'Player 1 wins!';
+        }
+    } elseif ($player_1_choice == 'paper') {
+        if ($player_2_choice == 'rock') {
+            $result = 'Player 1 wins!';
+        } elseif ($player_2_choice == 'paper') {
+            $result = "It's a tie!";
+        } elseif ($player_2_choice == 'scissors') {
+            $result = 'Player 2 wins!';
+        }
+    } elseif {
+        //p1choice scissors
+        if ($player_2_choice == 'rock') {
+            $result = 'Player 2 wins!';
+        } elseif ($player_2_choice == 'paper') {
+            $result = 'Player 1 wins!';
+        } elseif ($player_2_choice == 'scissors') {
+            $result = "It's a tie!";
+        }
+    }
+}
