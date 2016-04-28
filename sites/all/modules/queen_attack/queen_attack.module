@@ -1,0 +1,101 @@
+<?php
+
+function queen_attack_menu() {
+    $items['queen_attack'] = array(
+        'title' => 'Queen Attack',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('queen_attack_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['queen_attack_success_page'] = array(
+        'title' => 'King in check?',
+        'page callback' => 'queen_attack_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+
+    return $items;
+}
+
+function queen_attack_form() {
+    $form['queen_x'] = array(
+        '#title' => 'Queen X-coordinate',
+        '#type' => 'textfield',
+        '#description' => t('Please enter the Queens x-coordinate (1-8).'),
+        '#element_validate' => array('element_validate_number', 'element_validate_range'),
+        '#required' => TRUE,
+    );
+
+    $form['queen_y'] = array(
+        '#title' => 'Queen Y-coordinate',
+        '#type' => 'textfield',
+        '#description' => t("Please enter the Queen's y-coordinate (1-8)."),
+        '#element_validate' => array('element_validate_number', 'element_validate_range'),
+        '#required' => TRUE,
+    );
+
+    $form['king_x'] = array(
+        '#title' => 'King X-coordinate',
+        '#type' => 'textfield',
+        '#description' => t("Please enter the King's x-coordinate (1-8)."),
+        '#element_validate' => array('element_validate_number', 'element_validate_range'),
+        '#required' => TRUE,
+    );
+
+    $form['king_y'] = array(
+        '#title' => 'King Y-coordinate',
+        '#type' => 'textfield',
+        '#description' => t("Please enter the King's y-coordinate (1-8)."),
+        '#element_validate' => array('element_validate_number', 'element_validate_range'),
+        '#required' => TRUE,
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Check?!',
+    );
+
+    return $form;
+}
+
+function element_validate_range($element) {
+    if ($element['#value'] > 8 || $element['#value'] < 1) {
+        form_error($element, t('Number must be between 1-8.'));
+    }
+}
+
+function queen_attack_form_validate($form, &$form_state) {
+    $queen_x = $form_state['values']['queen_x'];
+    $queen_y = $form_state['values']['queen_y'];
+    $king_x = $form_state['values']['king_x'];
+    $king_y = $form_state['values']['king_y'];
+
+    if (($queen_x == $king_x) && ($queen_y == $king_y)) {
+        form_set_error('', t('Coordinates cannot be identical.'));
+    }
+}
+
+function queen_attack_form_submit($form, &$form_state) {
+    $result = "";
+    $queen_x = $form_state['values']['queen_x'];
+    $queen_y = $form_state['values']['queen_y'];
+    $king_x = $form_state['values']['king_x'];
+    $king_y = $form_state['values']['king_y'];
+
+    if (($queen_x == $king_x) || ($queen_y == $king_y)) {
+        $result = 'Check!';
+    } elseif (abs(($queen_x - $king_x) / ($queen_y - $king_y)) == 1) {
+        $result = 'Check!';
+    } else {
+        $result = 'Nah, brah.';
+    }
+
+    $_SESSION['result'] = $result;
+
+    $form_state['redirect'] = 'queen_attack_success_page';
+}
+
+function queen_attack_success() {
+    return '<strong>' . $_SESSION['result'] . '</strong>';
+}

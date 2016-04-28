@@ -1,0 +1,5 @@
+name = Queen Attack
+description = Takes coordinates to determine if the king is in check
+package = Epicodus Examples
+core = 7.x
+files[] = queen_attack.module
